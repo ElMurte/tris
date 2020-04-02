@@ -25,10 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        tris.cpp
+        tris.cpp \
+    model.cpp
 
 HEADERS += \
-        tris.h
+        tris.h \
+    model.h
 
 FORMS += \
         tris.ui

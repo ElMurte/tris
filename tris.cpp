@@ -2,13 +2,10 @@
 #include "ui_tris.h"
 
 Tris::Tris(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Tris)
+    QWidget(parent)
 {
-    ui->setupUi(this);
 }
 
 Tris::~Tris()
 {
-    delete ui;
 }
