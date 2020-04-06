@@ -1,11 +1,108 @@
 #include "tris.h"
-#include "ui_tris.h"
-
-Tris::Tris(QWidget *parent) :
-    QWidget(parent)
-{
+Tris::Tris(QWidget *parent):QWidget(parent){
+    mainlayout=new QVBoxLayout(this);gridlayout=new QGridLayout(this);
+//aggiungere menu
+addMenu();
+//celle gioco ovvero bottoni
+addButtons();
+mainlayout->addLayout(gridlayout);//aggiungere il layout
+setLayout(mainlayout);
+setTrisStyle();
 }
 
-Tris::~Tris()
-{
+Tris::~Tris(){
+
 }
+
+void Tris::Update(int player){
+    // Per adesso l'argomento player viene utilizzato per il testing
+        // In futuro verrà preso dal controller
+        for (unsigned short i = 0U; i < 9; ++i){
+
+            if (player != 0){
+                QLayoutItem* item = gridlayout->itemAtPosition(i/3,i%3);
+                QPushButton* button = static_cast<QPushButton*>(item->widget());
+                if (player == 1){
+                    button->setIcon(QIcon(":/risorse/player1.png"));
+                } else {
+                    button->setIcon(QIcon(":/risorse/player2.png"));
+                }
+                button->setEnabled(false);
+            }
+        }
+}
+
+void Tris::ResetGrid(){//Qlayoutbutton
+    for (unsigned short int i = 0U; i < 9; i++) {
+            // "Estraggo" il bottone
+            QPushButton *button = static_cast<QPushButton*>(gridlayout->itemAtPosition(i / 3, i % 3)->widget());
+      // Tolgo l'icona
+            button->setText("");
+
+            // Riabilito il bottone
+            button->setEnabled(true);
+    }
+}
+
+void Tris::ShowWinner(int winner){
+    //creo finestra con Qdialog
+    //creo il messaggio
+    //inserisco il messaggio
+    //metto nella finestra
+    QDialog* vincitore=new QDialog(this);
+    QVBoxLayout* layoutmessaggio=new QVBoxLayout(vincitore);
+    std::stringstream nomev;
+    if(winner){
+    nomev<<"The player"<<winner;
+    }
+    else nomev<<"draw";
+    layoutmessaggio->addWidget(new QLabel(QString::fromStdString(nomev.str()),vincitore));
+    vincitore->show();
+}
+
+void Tris::cellHandler(unsigned short x, unsigned short y) const{
+    QDialog* vincitore=new QDialog();
+    QVBoxLayout* layoutmessaggio=new QVBoxLayout(vincitore);
+    std::stringstream nomev;
+    nomev<<"cliccato("<<x<<","<<y<<")";
+    layoutmessaggio->addWidget(new QLabel(QString::fromStdString(nomev.str()),vincitore));
+    vincitore->show();
+}
+void Tris::addButtons(){
+//creare i bottoni ->Qpushbutton
+    //aggiungere al layout
+   for(unsigned short int i=0;i<9;i++){
+        TrisButton* button=new TrisButton(i/3,i%3,this);//crea
+        button->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);//policy size
+        connect(button,SIGNAL(clickedCell(unsigned short, unsigned short)),this,SLOT(cellHandler(unsigned short,unsigned short)) );
+        gridlayout->addWidget(button,i/3,i%3);//aggiungi
+    }
+
+}
+
+void Tris::setTrisStyle(){
+setMinimumSize(QSize(400,400));//dim
+setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);//
+QFile file(":/risorse/style.css");
+file.open(QFile::ReadOnly);
+QString filesheet=QLatin1String(file.readAll());
+setStyleSheet(filesheet);
+}
+
+void Tris::addMenu()
+{
+//creare barra poi menu poi azioni
+    QMenuBar*menubar=new QMenuBar(this);
+    QMenu*menu= new QMenu("Menu",menubar);
+    QAction* exit=new QAction("Exit",menu);
+    QAction* reset=new QAction("Reset",menu);
+    //aggiungo le azioni al menu
+    menu->addAction(reset);
+    menu->addAction(exit);
+    //aggiungo la barra layout
+    menubar->addMenu(menu);
+    mainlayout->addWidget(menubar);
+}
+
+
+

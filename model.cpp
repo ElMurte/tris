@@ -31,6 +31,23 @@ void Model::reset(){
         grid[i]=none;//
 }
 
+unsigned short Model::countFrame(Player player) const
+{
+    u_s_int i=0;//contatore istanze player
+    for(u_s_int n=0;i<9;n++){
+        if(grid[n]==player)
+            i++;
+    }
+    return i;
+}
+
+Player Model::operator()(unsigned short row, unsigned short col) const
+{
+    if( (row<0 || row >2) || (col <0 || col>2) )
+        return none;
+    return grid[row*3+col];//aritmetic pointers
+}
+
 bool Model::CheckWinner(unsigned short i, unsigned short j, unsigned short k) const{
     return grid[i]!=none &&  grid[i]==grid[j]==grid[k];//Qt suggerisce parentesi LOL
 }

@@ -5,9 +5,8 @@
 #-------------------------------------------------
 
 QT       += core gui
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
+CONFIG += c++11 #aggiunto io
 TARGET = tris
 TEMPLATE = app
 
@@ -26,11 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         tris.cpp \
-    model.cpp
+    model.cpp \
+    trisbutton.cpp
 
 HEADERS += \
         tris.h \
-    model.h
+    model.h \
+    trisbutton.h
+FORMS +=
 
-FORMS += \
-        tris.ui
+RESOURCES += \
+    risorse.qrc
