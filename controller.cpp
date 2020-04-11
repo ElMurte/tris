@@ -1,6 +1,6 @@
 #include "controller.h"
 
-Controller::Controller(Model *mod, QObject *parent) : view(nullptr),model(mod),QObject(parent){}
+Controller::Controller(Model *mod, QObject *parent) : QObject(parent),view(nullptr),model(mod){}
 
 void Controller::set_View(Tris *v){
 view=v;
@@ -18,7 +18,7 @@ void Controller::Move(unsigned short x, unsigned short y){
     //provo sd eseguire la mossa
     if(model->Move(x,y)){
         view->Update();
-        if(model->winner() || ((model->countFrame(player1))+(model->countFrame(player2)))==8){
+        if(model->winner() || ((model->countFrame(player1))+(model->countFrame(player2)))==9){
             view->ShowWinner();
             resetGame();
         }

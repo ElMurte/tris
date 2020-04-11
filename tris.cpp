@@ -55,30 +55,31 @@ void Tris::ShowWinner(){
     QVBoxLayout* layoutmessaggio=new QVBoxLayout(vincitore);
     std::stringstream nomev;
     if(winner){
-    nomev<<"The winner is"<<winner;
+    nomev<<"The winner is Player "<<winner;
     }
-    else nomev<<"draw :)";
+    else nomev<<"DRAW";
     layoutmessaggio->addWidget(new QLabel(QString::fromStdString(nomev.str()),vincitore));
     vincitore->show();
 }
 
-void Tris::cellHandler(unsigned short x, unsigned short y) const{
-   /* QDialog* vincitore=new QDialog();
+void Tris::cellHandler(unsigned short x, unsigned short y) const{/*for debugging cellsUI OR other cases*/
+    /*QDialog* vincitore=new QDialog();
     QVBoxLayout* layoutmessaggio=new QVBoxLayout(vincitore);
     std::stringstream nomev;
     nomev<<"cliccato("<<x<<","<<y<<")";
     layoutmessaggio->addWidget(new QLabel(QString::fromStdString(nomev.str()),vincitore));
     vincitore->show();*/
 }
+
 void Tris::addButtons(){
 //creare i bottoni ->Qpushbutton
     //aggiungere al layout
    for(unsigned short int i=0;i<9;i++){
         TrisButton* button=new TrisButton(i/3,i%3,this);//crea
         button->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);//policy size
-        //connect(button,SIGNAL(clickedCell(unsigned short, unsigned short)),this,SLOT(cellHandler(unsigned short,unsigned short)) );
-        connect(button,SIGNAL(clickedCell(unsigned short, unsigned short)),controller,SLOT(Move(unsigned short,unsigned short)) );
         gridlayout->addWidget(button,i/3,i%3);//aggiungi
+        connect(button,SIGNAL(clickedCell(unsigned short, unsigned short)),controller,SLOT(Move(unsigned short,unsigned short)) );
+        //comment connect(button,SIGNAL(clickedCell(unsigned short, unsigned short)),this,SLOT(cellHandler(unsigned short,unsigned short)) );
     }
 }
 

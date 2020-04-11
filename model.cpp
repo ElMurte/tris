@@ -1,5 +1,5 @@
 #include "model.h"
-
+using namespace std;
 Model::Model(){
     reset();
 }
@@ -34,7 +34,7 @@ void Model::reset(){
 unsigned short Model::countFrame(Player player) const
 {
     unsigned short i=0;//contatore istanze player
-    for(unsigned short n=0;i<9;n++){
+    for(unsigned short n=0;n<9;n++){
         if(grid[n]==player)
             i++;
     }
