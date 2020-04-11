@@ -6,7 +6,7 @@ class TrisButton : public QPushButton
 {
     Q_OBJECT
 public:
-    TrisButton(u_s_int r,u_s_int c,QWidget*parent=nullptr);
+    TrisButton(unsigned short r,unsigned short c,QWidget*parent=nullptr);
 
 signals:
 void clickedCell(unsigned short, unsigned short);

@@ -1,5 +1,6 @@
 #include "tris.h"
-Tris::Tris(QWidget *parent):QWidget(parent){
+#include"controller.h"
+Tris::Tris(Controller* c,QWidget *parent):QWidget(parent),controller(c){
     mainlayout=new QVBoxLayout(this);gridlayout=new QGridLayout(this);
 //aggiungere menu
 addMenu();
@@ -14,11 +15,11 @@ Tris::~Tris(){
 
 }
 
-void Tris::Update(int player){
+void Tris::Update(){
     // Per adesso l'argomento player viene utilizzato per il testing
         // In futuro verrà preso dal controller
         for (unsigned short i = 0U; i < 9; ++i){
-
+                int player=controller->get_Player(i/3,i%3);
             if (player != 0){
                 QLayoutItem* item = gridlayout->itemAtPosition(i/3,i%3);
                 QPushButton* button = static_cast<QPushButton*>(item->widget());
@@ -37,36 +38,37 @@ void Tris::ResetGrid(){//Qlayoutbutton
             // "Estraggo" il bottone
             QPushButton *button = static_cast<QPushButton*>(gridlayout->itemAtPosition(i / 3, i % 3)->widget());
       // Tolgo l'icona
-            button->setText("");
+            button->setIcon(QIcon());
 
             // Riabilito il bottone
             button->setEnabled(true);
     }
 }
 
-void Tris::ShowWinner(int winner){
+void Tris::ShowWinner(){
     //creo finestra con Qdialog
     //creo il messaggio
     //inserisco il messaggio
     //metto nella finestra
+    int winner=controller->get_Winner();
     QDialog* vincitore=new QDialog(this);
     QVBoxLayout* layoutmessaggio=new QVBoxLayout(vincitore);
     std::stringstream nomev;
     if(winner){
-    nomev<<"The player"<<winner;
+    nomev<<"The winner is"<<winner;
     }
-    else nomev<<"draw";
+    else nomev<<"draw :)";
     layoutmessaggio->addWidget(new QLabel(QString::fromStdString(nomev.str()),vincitore));
     vincitore->show();
 }
 
 void Tris::cellHandler(unsigned short x, unsigned short y) const{
-    QDialog* vincitore=new QDialog();
+   /* QDialog* vincitore=new QDialog();
     QVBoxLayout* layoutmessaggio=new QVBoxLayout(vincitore);
     std::stringstream nomev;
     nomev<<"cliccato("<<x<<","<<y<<")";
     layoutmessaggio->addWidget(new QLabel(QString::fromStdString(nomev.str()),vincitore));
-    vincitore->show();
+    vincitore->show();*/
 }
 void Tris::addButtons(){
 //creare i bottoni ->Qpushbutton
@@ -74,10 +76,10 @@ void Tris::addButtons(){
    for(unsigned short int i=0;i<9;i++){
         TrisButton* button=new TrisButton(i/3,i%3,this);//crea
         button->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);//policy size
-        connect(button,SIGNAL(clickedCell(unsigned short, unsigned short)),this,SLOT(cellHandler(unsigned short,unsigned short)) );
+        //connect(button,SIGNAL(clickedCell(unsigned short, unsigned short)),this,SLOT(cellHandler(unsigned short,unsigned short)) );
+        connect(button,SIGNAL(clickedCell(unsigned short, unsigned short)),controller,SLOT(Move(unsigned short,unsigned short)) );
         gridlayout->addWidget(button,i/3,i%3);//aggiungi
     }
-
 }
 
 void Tris::setTrisStyle(){
@@ -97,6 +99,8 @@ void Tris::addMenu()
     QAction* exit=new QAction("Exit",menu);
     QAction* reset=new QAction("Reset",menu);
     //aggiungo le azioni al menu
+    connect(reset,SIGNAL(triggered()),controller,SLOT(resetGame()));
+    connect(exit,SIGNAL(triggered()),this,SLOT(close()));
     menu->addAction(reset);
     menu->addAction(exit);
     //aggiungo la barra layout

@@ -12,17 +12,20 @@
 #include <QLabel>
 #include <sstream>
 #include "trisbutton.h"
+
+class Controller;
 class Tris : public QWidget{
 Q_OBJECT
 public:
-    Tris(QWidget *parent=0);
+    Tris(Controller* c,QWidget *parent=0);
     ~Tris();
-    void Update(int player);
+    void Update();
     void ResetGrid();
-    void ShowWinner(int winner);
+    void ShowWinner();
 public slots:
 void cellHandler(unsigned short,unsigned short) const;
 private:
+    Controller* controller;
     QVBoxLayout *mainlayout;
     QGridLayout *gridlayout;
     void addMenu();

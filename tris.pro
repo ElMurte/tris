@@ -23,12 +23,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    controller.cpp \
         main.cpp \
         tris.cpp \
     model.cpp \
     trisbutton.cpp
 
 HEADERS += \
+    controller.h \
         tris.h \
     model.h \
     trisbutton.h
