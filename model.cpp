@@ -4,12 +4,13 @@ Model::Model(){
     reset();
 }
 
-bool Model::Move(unsigned short x, unsigned short y){
+void Model::Move(unsigned short x, unsigned short y){
     //se esiste un vincitore nada  OR  outofbound or se la casella è occupata
-    if (  x>2 || y>2 || winner() || (grid[x*3+y]!=none)) return false;
+    if( x>2 || y>2 ) throw new std::domain_error("Exception ("+ std::to_string(x) + "," + std::to_string(y)+") out of bounds");
+    if (winner()) throw new MoveException(x,y);
+        if(grid[x*3+y]!=none) throw new MoveException(x,y);
          grid[x*3+y]=(turn?player2:player1);
          turn=!turn;
-         return true;
 }
 
 Player Model::winner() const{

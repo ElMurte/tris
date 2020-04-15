@@ -17,7 +17,6 @@ Tris::~Tris(){
 
 void Tris::Update(){
     // Per adesso l'argomento player viene utilizzato per il testing
-        // In futuro verrà preso dal controller
         for (unsigned short i = 0U; i < 9; ++i){
                 int player=controller->get_Player(i/3,i%3);
             if (player != 0){
@@ -28,7 +27,7 @@ void Tris::Update(){
                 } else {
                     button->setIcon(QIcon(":/risorse/player2.png"));
                 }
-                button->setEnabled(false);
+                //button->setEnabled(false);
             }
         }
 }
@@ -69,6 +68,13 @@ void Tris::cellHandler(unsigned short x, unsigned short y) const{/*for debugging
     nomev<<"cliccato("<<x<<","<<y<<")";
     layoutmessaggio->addWidget(new QLabel(QString::fromStdString(nomev.str()),vincitore));
     vincitore->show();*/
+}
+
+void Tris::ShowErrorMessage(const QString &message){
+    QDialog* messaggio=new QDialog(this);
+    QVBoxLayout* layoutmessaggio=new QVBoxLayout(messaggio);
+    layoutmessaggio->addWidget(new QLabel(message,messaggio));
+    messaggio->show();
 }
 
 void Tris::addButtons(){

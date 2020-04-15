@@ -16,12 +16,15 @@ int Controller::get_Winner() const{
 
 void Controller::Move(unsigned short x, unsigned short y){
     //provo sd eseguire la mossa
-    if(model->Move(x,y)){
+    try {model->Move(x,y);
         view->Update();
         if(model->winner() || ((model->countFrame(player1))+(model->countFrame(player2)))==9){
             view->ShowWinner();
             resetGame();
         }
+    }
+    catch (std::exception* exc) {
+        view->ShowErrorMessage(exc->what());
     }
 //se la mossa va a buon aggiorno la vista e controllo il vincitore
 //oppure dovrei aggiornare la vista con qualche messaggio

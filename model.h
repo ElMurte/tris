@@ -1,13 +1,15 @@
   #ifndef MODEL_H
 #define MODEL_H
 #define u_s_int unsigned short
+#include <stdexcept>
+#include "moveexception.h"
 enum Player{none=0,player1=1,player2=2};
 class Model
 {
 public:
     Model();
     //svolgimento di una mossa
-    bool Move( u_s_int x, u_s_int y);
+    void Move( u_s_int x, u_s_int y);
     //restituzione di un vincitore
     Player winner()const;//ritorna il vincitore se esiste altrimenti ritorna 0
     //reset

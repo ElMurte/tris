@@ -22,12 +22,14 @@ public:
     void Update();
     void ResetGrid();
     void ShowWinner();
+       void ShowErrorMessage(const QString& message);
 public slots:
 void cellHandler(unsigned short,unsigned short) const;
 private:
     Controller* controller;
     QVBoxLayout *mainlayout;
     QGridLayout *gridlayout;
+
     void addMenu();
     void addButtons();
     void setTrisStyle();
